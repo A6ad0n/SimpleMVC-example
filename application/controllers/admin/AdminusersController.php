@@ -73,6 +73,9 @@ class AdminusersController extends \ItForFree\SimpleMVC\MVC\Controller
             if (!empty($_POST['saveChanges'] )) {
                 $Adminusers = new UserModel();
                 $newAdminusers = $Adminusers->loadFromArray($_POST);
+                if (empty($_POST['pass'])) {
+                    $newAdminusers->pass = $Adminusers->getById($id)->pass;
+                }
                 $newAdminusers->update();
                 $this->redirect($Url::link("admin/adminusers/index&id=$id"));
             } 
