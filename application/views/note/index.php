@@ -7,23 +7,60 @@ $User = Config::getObject('core.user.class');
 
 <h2>List notes</h2>
 
-<?php if (!empty($notes)): ?>
+<?php if (!empty($preparedData)): ?>
 <table class="table">
     <thead>
-    <tr>
-      <th scope="col">Оглавление</th>
-      <th scope="col">Посвящается</th>
-      <th scope="col">Дата</th>
-      <th scope="col"></th>
-    </tr>
+        <tr>
+            <th>Publication Date</th>
+            <th>Article</th>
+            <th>Category</th>
+            <th>Subcategory</th>
+            <th>Authors</th>
+            <th>Active</th>
+        </tr>     
      </thead>
     <tbody>
-    <?php foreach($notes as $note): ?>
+    <?php foreach($preparedData as $row): ?>
     <tr>
+        <td><?php echo $row['notePublicationDate']?></td>
         <td> <?= "<a href=" . \ItForFree\SimpleMVC\Router\WebRouter::link('admin/notes/index&id=' 
-		. $note->id . ">{$note->title}</a>" ) ?> </td>
-        <td> <?= $note->content ?> </td>
-        <td> <?= $note->publicationDate ?> </td>
+		    . $row['noteId'] . ">{$row['noteTitle']}</a>" ) ?> </td>
+        <td>   
+            <?php 
+            if(isset ($row['categoryId'])) {
+                echo "<a href=" . \ItForFree\SimpleMVC\Router\WebRouter::link('admin/categories/index&id=' 
+                . $row['categoryId'] . ">{$row['categoryName']}</a>");                    
+            }
+            else {
+            echo "Без категории";
+            }?>
+        </td>
+        <td>
+            <?php 
+            if(isset($row['subcategoryId'])) {
+                 echo "<a href=" . \ItForFree\SimpleMVC\Router\WebRouter::link('admin/subcategories/index&id=' 
+                . $row['subcategoryId'] . ">{$row['subcategoryName']}</a>");   
+            }
+            else {
+                echo "(none)";
+            }?>
+        </td>
+        <td>
+            <?php 
+            if (isset($row['noteAuthors']) && !empty($row['noteAuthors'])) {
+                $hyperNames = array();
+                foreach($row['noteAuthors'] as $author) {
+                    $hyperNames[] = "<a href=" . \ItForFree\SimpleMVC\Router\WebRouter::link('admin/adminusers/index&id=' 
+                    . $author->id . ">{$author->login}</a>"); 
+                }
+                echo implode(', ', $hyperNames);
+            } else {
+                echo '(none)';
+            }?> 
+        </td>
+        <td>
+            <?php echo $row['noteActive'] == 1 ? 'active' : 'deactivated'; ?>
+        </td>
     </tr>
     <?php endforeach; ?>
 
