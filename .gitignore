@@ -12,3 +12,5 @@
 
 #игнорируем локальные конфигурационные файлы
 /application/config/*-local.php
+
+tailwindcss
