@@ -6,7 +6,7 @@ namespace application\models;
  * 
  */
 
-class Note extends BaseExampleModel {
+class Note extends \ItForFree\SimpleMVC\MVC\Model {
     
     public string $tableName = "articles";
     

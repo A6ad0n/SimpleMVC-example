@@ -14,12 +14,18 @@ class HomepageController extends \ItForFree\SimpleMVC\MVC\Controller
     /**
      * @var string Название страницы
      */
-    public $homepageTitle = "Домашняя страница";
+    public string $homepageTitle = "Домашняя страница";
     
     /**
      * @var string Пусть к файлу макета 
      */
     public string $layoutPath = 'home.php';
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->pageTitle = $this->homepageTitle;
+    }
       
     /**
      * Выводит на экран страницу "Домашняя страница"
@@ -61,8 +67,13 @@ class HomepageController extends \ItForFree\SimpleMVC\MVC\Controller
                 'noteAuthors' => $note->authors
             ];
         }
-        $this->view->addVar('preparedData', $preparedData);
-        $this->view->render('homepage/index.php');
+        
+        if ($this->isApiRequested()) {
+            $this->sendApiResponse($preparedData);
+        } else {
+            $this->view->addVar('preparedData', $preparedData);
+            $this->view->render('homepage/index.php');
+        }
     }
 }
 
