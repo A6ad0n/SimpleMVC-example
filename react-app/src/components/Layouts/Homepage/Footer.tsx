@@ -18,7 +18,7 @@ const Footer = () => {
       }
     };
     getAdminLink();
-  },[]);
+  }, [isAllowed]);
 
   return (
     <footer className="mt-10 pt-5 text-[0.8em] border-t border-[#00a0b0]">
